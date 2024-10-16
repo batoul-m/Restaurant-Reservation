@@ -1,7 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Db.Models;
 namespace RestaurantReservation.Db
 {
     public class RestaurantReservationDbContext : DbContext{
+        private readonly IConfiguration _configuration;
+        public RestaurantReservationDbContext(DbContextOptions<RestaurantReservationDbContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Orders> Orders{ get; set; }
@@ -10,12 +17,14 @@ namespace RestaurantReservation.Db
         public DbSet<Employees> Employees{ get; set; }
         public DbSet<Tabels> Tabels{ get; set; }
         public DbSet<Restaurants> Restaurants{ get; set; }
-
+        public DbSet<ReservationWithDetails> ReservationWithDetails { get; set; }
+        public DbSet<EmployeeWithRestaurantDetails> EmployeeWithRestaurantDetails { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=RestaurantReservationCore;Trusted_Connection=True;");
+                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -130,10 +139,13 @@ namespace RestaurantReservation.Db
                 entity.Property(r => r.PhoneNumber).IsRequired();
                 entity.Property(r => r.OpeningHour).IsRequired();
             });
-        
+            //for Views 
+            modelBuilder.Entity<ReservationWithDetails>().HasNoKey().ToView("vw_ReservationsWithDetails");
+            modelBuilder.Entity<EmployeeWithRestaurantDetails>().HasNoKey().ToView("vw_EmployeesWithRestaurantDetails");
+            base.OnModelCreating(modelBuilder);        
         } 
         //Seeds the tables with at least 5 record for each
-        public void Seed()
+        public async void SeedAsync()
         {
             if (!Customers.Any())
             {
@@ -144,7 +156,7 @@ namespace RestaurantReservation.Db
                 new Customers { FirstName = "Bob", LastName = "Brown", Email = "bob.brown@example.com", PhoneNumber = 444555666 },
                 new Customers { FirstName = "Charlie", LastName = "Johnson", Email = "charlie.johnson@example.com", PhoneNumber = 778889999 }
             );
-                SaveChanges();
+                await SaveChangesAsync();
             }
             if (!Employees.Any())
             {
@@ -155,7 +167,7 @@ namespace RestaurantReservation.Db
                 new Employees { FirstName = "Noah", LastName = "Davis", Position = "Waiter", ResturantId  = 4 },
                 new Employees { FirstName = "Sophia", LastName = "Miller", Position = "Host", ResturantId  = 5 }
             );
-                SaveChanges();
+                await SaveChangesAsync();
             }             
             if (!MenuItems.Any())
             {
@@ -166,7 +178,7 @@ namespace RestaurantReservation.Db
                 new MenuItems { Name = "Sushi Roll", Description = "Fresh salmon sushi roll", Price = 14.99, ResturantId  = 5 },
                 new MenuItems { Name = "Grilled Steak", Description = "Tender grilled steak", Price = 19.99, ResturantId  = 1 }
             );
-                SaveChanges();
+                await SaveChangesAsync();
             }
             if (!Restaurants.Any())
             {
@@ -177,8 +189,19 @@ namespace RestaurantReservation.Db
                     new Restaurants { Name = "Taco Town", Address = "321 Mexican Blvd.", PhoneNumber = 555456789, OpeningHour = "10 AM - 8 PM" },
                     new Restaurants { Name = "Sushi Central", Address = "654 Sushi Dr.", PhoneNumber = 555678901, OpeningHour = "10 AM - 10 PM" }
             );
-                SaveChanges();
+                await SaveChangesAsync();
             }
+        }
+        //implement calculate revenue function
+        public async Task<decimal> CalculateTotalRevenue(int restaurantId)
+        {
+            var totalRevenue = await this.Database.ExecuteSqlRawAsync("SELECT dbo.CalculateTotalRevenue({0})", restaurantId);
+            return totalRevenue;
+            
+        }
+        public async Task<List<Customers>> FindCustomersWithLargeParties(int partySize)
+        {
+            return await this.Customers.FromSqlRaw("EXEC FindCustomersWithLargeParties @PartySize = {0}",partySize).ToListAsync();
         }
     }
 }
