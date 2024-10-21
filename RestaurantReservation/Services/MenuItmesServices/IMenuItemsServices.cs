@@ -1,13 +1,11 @@
-using RestaurantReservation.Db;
-using RestaurantReservation.Models;
-using Microsoft.EntityFrameworkCore;
+using RestaurantReservation;
+using RestaurantReservation.Db.Models;
 namespace RestaurantReservation.Services.MenuItemsServices
 {
     public interface IMenuItemsService 
     {
-        void CreateMenuItems(MenuItems menuItem);
-        void DeleteMenuItems(MenuItems menuItem);
-        void UpdateMenuItems(MenuItems menuItem);
-        bool FindMenuItems(MenuItems menuItem);
+        void CreateMItems(MenuItems menuItems);
+        void DeleteMItems(MenuItems menuItems);
+        void UpdateMItems(MenuItems menuItems);
     }
 }

@@ -1,11 +1,12 @@
-using RestaurantReservation;
+using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
 namespace RestaurantReservation.Db.Repositories.TablesRepository
 {
     public interface ITablesRepository
     {
-        void CreateTables(Tabels tabels);
-        void DeleteTables(Tabels tabels);
-        void UpdateTables(Tabels tabels);
+        void CreateTable(Tabels table);
+        void DeleteTable(Tabels table);
+        void UpdateTable(Tabels table);
+        Task<bool> IsExisitTabels(int tabelsId)
     }
 }

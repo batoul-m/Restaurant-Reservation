@@ -1,43 +1,28 @@
-using RestaurantReservation.Db;
+using RestaurantReservation.Db.Repositories.RestaurantsRepository;
 using RestaurantReservation.Db.Models;
 namespace RestaurantReservation.Services.ResturantsServices
 {
     public class RestaurantServices : IRestaurantServices
     {
-        private readonly RestaurantReservationDbContext _context;
-        public RestaurantServices(RestaurantReservationDbContext context)
+        private readonly IRestaurantsRepository _restaurantsRepository;
+        public RestaurantsRespositry(IRestaurantsRepository restaurantsRepository)
         {
-            _context = context;
+            _restaurantsRepository = restaurantsRepository;
         }
-        async void CreateRestaurant(Restaurants restaurant)
+
+        async void CreateRestaurant(Restaurants restaurants)
         {
-            _context.Restaurants.Add(resturant);
-            await _context.SaveChangesAsync();
+            await _restaurantsRepository.CreateRestaurant(restaurants);   
         }
-        async void UpdateRestaurant(Restaurants restaurants)
-        {
-            var existingResturant = FindRestaurant(restaurants);
-            if (existingResturant is not null)
-            {
-                existingResturant.Name = resturant.Name;
-                existingResturant.PhoneNumber = resturant.PhoneNumber;
-                existingResturant.Address = resturant.Address;
-                existingResturant.OpeningHour = resturant.OpeningHour;
-                await _context.SaveChangesAsync();
-            }
-        }
+
         async void DeleteRestaurant(Restaurants restaurants)
         {
-            var existingResturant = FindRestaurant(restaurants);
-            if (existingResturant is not null)
-            {
-                _context.Restaurants.Remove(existingResturant);
-                await _context.SaveChangesAsync();
-            }
+            await _restaurantsRepository.DeleteRestaurant(restaurants);
         }
-        void FindRestaurant(Restaurants restaurant)
+
+        async void UpdateRestaurant(Restaurants restaurants)
         {
-            return _context.Restaurants.Find(restaurants.RestaurantId);
+            await _restaurantsRepository.UpdateRestaurant(restaurants);
         }
     }
 }

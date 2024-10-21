@@ -1,28 +1,38 @@
-using RestaurantReservation.Services.TablesServices;
+using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
 namespace RestaurantReservation.Db.Repositories.TablesRepository
 {
     public class TabelsRespositry : ITablesRepository
     {
-        private readonly ITablesServices _tablesServices
-        public TabelsRespositry(ITablesServices tablesServices)
+        private readonly RestaurantReservationDbContext _context;
+        async void CreateTable(Tabels table)
         {
-            _tablesServices = tablesServices;
+            _context.Tabels.Add(table);
+            await _context.SaveChangesAsync();
         }
-
-        void ITablesRepository.CreateTables(Tabels tabels)
+        async void DeleteTable(Tabels table)
         {
-            _tablesServices.CreateTables(tabels);
+            var exisitingTable = IsExisitTabels(table.TabelsId);
+            if (exisitingTable is not null)
+            {
+                _context.Tabels.Remove(exisitingTable);
+                await _context.SaveChangesAsync();
+            }
         }
-
-        void ITablesRepository.DeleteTables(Tabels tabels)
+        async void UpdateTable(Tabels table)
         {
-            _tablesServices.DeleteTables(tabels);
+            var existingTabel = IsExisitTabels(table.TabelsId);
+            if (existingTabel is not null)
+            {
+                existingTabel.ResturantId = table.ResturantId;
+                existingTabel.Capacity = table.Capacity;
+                await _context _context.SaveChangesAsync();
+            }
         }
-
-        void ITablesRepository.UpdateTables(Tabels tabels)
+        
+        public async Task<bool> IsExisitTabels(int tabelsId)
         {
-            _tablesServices.UpdateTables(tabels);
+            return await _context.Tabels.AnyAsync(c => c.TabelsId == tabelsId);
         }
     }
 }

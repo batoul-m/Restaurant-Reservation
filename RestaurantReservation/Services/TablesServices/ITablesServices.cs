@@ -1,13 +1,11 @@
-using RestaurantReservation.Db;
+using RestaurantReservation;
 using RestaurantReservation.Db.Models;
-
 namespace RestaurantReservation.Services.TabelsServices
 {
     public interface ITablesServices
     {
-        void CreateTable(Tabels table);
-        void DeleteTable(Tabels table);
-        void UpdateTable(Tabels table);
-        bool FindTable(Tabels table);
+        void CreateTables(Tabels tabels);
+        void DeleteTables(Tabels tabels);
+        void UpdateTables(Tabels tabels);
     }
 }

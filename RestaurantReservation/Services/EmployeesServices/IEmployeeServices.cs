@@ -1,15 +1,12 @@
-using RestaurantReservation.Db;
+using RestaurantReservation;
 using RestaurantReservation.Db.Models;
-namespace RestaurantReservation.Services.EmployeesServices
+namespace RestaurantReservation.Services.EmployeeService
 {
     public interface IEmployeeService
     {
-        void CreateEmployee(Employee employee);
-        void UpdateEmployee(Employee employee);
-        void DeleteEmployee(Employee employee);
-        bool FindEmployee(Employee employee);
-        Task<List<Employees>> ListManagers();
+        void CreateEmployee(Employees employees);
+        void DeleteEmployee(Employees employees);
+        void UpdateEmployee(Employees employees);
         decimal CalculateAverageOrderAmount(int employeeId);
-
     }
 }

@@ -1,28 +1,19 @@
-using System.Collections;
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db;
-using RestaurantReservation.Db.Models;
+using RestaurantReservation.Db.Models.Views;
+using RestaurantReservation.Db.Repositories.ViewsRepositories.ReservationWithDetailsRepositroy;
 namespace RestaurantReservation.Services.ViewsServices.ReservationWithDetails 
 {
     public class ReservationWithDetails : IReservationWithDetails
     {
-        private readonly RestaurantReservationDbContext _context;
-        public ReservationWithDetails(RestaurantReservationDbContext context)
+        private readonly IReservationWithDetailsRepository _reservationWithDetailsRepository;
+        public ReservationWithDetails(IReservationWithDetailsRepository reservationWithDetailsRepository)
         {
-            _context = context;
+            _reservationWithDetailsRepository = reservationWithDetailsRepository;
         }
         public async Task<ArrayList> GetReservationsWithDetailsAsync()
         {
-            var result = new ArrayList();
-
-            var dbReservationWithDetails = await _context.ReservationWithDetails.ToListAsync();
-
-            foreach (var item in dbReservationWithDetails)
-            {
-                result.Add(item); // Here, item is implicitly cast to object
-            }
-
-            return result;
+            return await _reservationWithDetailsRepository.GetReservationsWithDetailsAsync();
         }
     }
 }

@@ -5,10 +5,9 @@ namespace RestaurantReservation.Services.ReservationsServices
 {
     public interface IReservationService
     {
-        void CreateReservation(Reservation reservation);
-        void UpdateReservation(Reservation reservation);
-        void DeleteReservation(Reservation reservation);
-        bool FindReservation(Reservation reservation);
-        Task<List<Reservation>> GetReservationsByCustomer(int customerId);
+        void CreateReservations(Reservation reservation);
+        void DeleteReservations(Reservation reservation);
+        void UpdateRseservations(Reservation reservation);
+        Task<List<Reservation>> IReservationService.GetReservationsByCustomer(int customerId);
     }
 }
