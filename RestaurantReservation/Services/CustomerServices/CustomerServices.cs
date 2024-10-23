@@ -9,18 +9,18 @@ namespace RestaurantReservation.Services.CustomerServices;
         {
             _customersRepository = customerRepository;
         }
-        async void ICustomersRepository.CreateCustomer(Customers customer)
+        async void CreateCustomer(Customers customer)
         {
             await _customersRepository.CreateCustomer(customer);
             
         }
 
-        async void ICustomersRepository.DeleteCustomers(Customers customer)
+        async void DeleteCustomers(Customers customer)
         {
             await _customersRepository.DeleteCustomer(customer);
         }
 
-        async void ICustomersRepository.UpdateCustomer(Customers customer)
+        async void UpdateCustomer(Customers customer)
         {
             await _customersRepository.UpdateCustomer(customer);
         }
