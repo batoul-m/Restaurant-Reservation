@@ -7,7 +7,7 @@ namespace RestaurantReservation.Db.Repositories.ReservationsRepository
         void CreateReservation(Reservation reservation);
         void UpdateReservation(Reservation reservation);
         void DeleteReservation(Reservation reservation);
-        Task<bool> IsExisitReservations(int reservationId);
+        Task<Reservations> IsExisitReservations(int reservationId);
         Task<List<Reservation>> GetReservationsByCustomer(int customerId);
     }
 }

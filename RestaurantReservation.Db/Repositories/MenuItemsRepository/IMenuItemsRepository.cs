@@ -8,6 +8,6 @@ namespace RestaurantReservation.Db.Repositories.MenuItemsRepository
         void CreateMenuItems(MenuItems menuItem);
         void DeleteMenuItems(MenuItems menuItem);
         void UpdateMenuItems(MenuItems menuItem);
-        Task<bool> IsExisitMenyItems(MenuItems menuItem);
+        Task<MenuItems> IsExisitMenyItems(MenuItems menuItem);
     }
 }

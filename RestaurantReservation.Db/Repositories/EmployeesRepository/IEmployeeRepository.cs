@@ -7,7 +7,7 @@ namespace RestaurantReservation.Db.Repositories.EmployeeRepository
         void CreateEmployee(Employee employee);
         void UpdateEmployee(Employee employee);
         void DeleteEmployee(Employee employee);
-        bool IsExisitEmployee(int employeeId);
+        Task<Employee> IsExisitEmployee(int employeeId);
         Task<List<Employees>> ListManagers();
         decimal CalculateAverageOrderAmount(int employeeId);
 

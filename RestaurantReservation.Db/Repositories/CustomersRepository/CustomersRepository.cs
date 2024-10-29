@@ -36,9 +36,9 @@ namespace RestaurantReservation.Db.Repositories.CustomersRepository
                await _context.SaveChangesAsync();
             }
         }
-        async public Task<bool> IsExistedCutomer(int customerId)
+        async public Task<Customers> IsExistedCutomer(int customerId)
         {
-            return await _context.Customers.AnyAsync(c => c.Id == customerId);
+            return await _context.Customers.FindAsync(c => c.Id == customerId);
         }
     }
 }

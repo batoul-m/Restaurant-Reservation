@@ -36,9 +36,9 @@ namespace RestaurantReservation.Db.Repositories.OrderItemsRepository
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<bool> IsExisitOrderItems(int orderItemsId)
+        public async Task<OrderItems> IsExisitOrderItems(int orderItemsId)
         {
-            return await _context.OrderItems.AnyAsync(c => c.ItemId == orderItemsId);
+            return await _context.OrderItems.FindAsync(c => c.ItemId == orderItemsId);
         }
     }
 }

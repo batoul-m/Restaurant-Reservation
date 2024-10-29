@@ -37,9 +37,9 @@ namespace RestaurantReservation.Db.Repositories.OrdersRepository
                 await _context.SaveChangesAsync();
             } 
         }
-        public async Task<bool> IsExisitOrder(int OrderId)
+        public async Task<OrderItems> IsExisitOrder(int OrderId)
         {
-            return await _context.OrderItems.AnyAsync(c => c.OrderId == OrderId);
+            return await _context.OrderItems.FindAsync(c => c.OrderId == OrderId);
         }
         Task<List<Orders>> ListOrdersAndMenuItems(int reservationId)
         {

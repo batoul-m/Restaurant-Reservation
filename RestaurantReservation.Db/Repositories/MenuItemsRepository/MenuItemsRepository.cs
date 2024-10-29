@@ -37,9 +37,9 @@ namespace RestaurantReservation.Db.Repositories.MenuItemsRepository
             }
             
         }
-        public async Task<bool> IsExisitMenyItems(int ItemId)
+        public async Task<MenuItems> IsExisitMenyItems(int ItemId)
         {
-            return await _context.MenuItems.AnyAsync(c => c.Id == ItemId);
+            return await _context.MenuItems.FindAsync(c => c.Id == ItemId);
         }
     }
 }

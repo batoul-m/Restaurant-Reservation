@@ -7,6 +7,6 @@ namespace RestaurantReservation.Db.Repositories.OrderItemsRepository
         void CreateOrderItem(OrderItem item);
         void UpdateOrderItem(OrderItem item);
         void DeleteOrderItem(OrderItem item);
-        Task<bool> IsExisitOrderItems(int orderItemsId);
+        Task<OrderItems> IsExisitOrderItems(int orderItemsId);
     }
 }

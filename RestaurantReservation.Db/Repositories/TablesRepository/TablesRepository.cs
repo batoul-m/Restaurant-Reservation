@@ -30,9 +30,9 @@ namespace RestaurantReservation.Db.Repositories.TablesRepository
             }
         }
         
-        public async Task<bool> IsExisitTabels(int tabelsId)
+        public async Task<Tabels> IsExisitTabels(int tabelsId)
         {
-            return await _context.Tabels.AnyAsync(c => c.TabelsId == tabelsId);
+            return await _context.Tabels.FindAsync(c => c.TabelsId == tabelsId);
         }
     }
 }

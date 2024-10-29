@@ -38,9 +38,9 @@ namespace RestaurantReservation.Db.Repositories.ReservationsRepository
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<bool> IsExisitReservations(int reservationId)
+        public async Task<Reservations> IsExisitReservations(int reservationId)
         {
-            return await _context.Reservations.AnyAsync(c => c.ReservationId == reservationId);
+            return await _context.Reservations.FindAsync(c => c.ReservationId == reservationId);
         }
         Task<List<Reservation>> GetReservationsByCustomer(int customerId)
         {

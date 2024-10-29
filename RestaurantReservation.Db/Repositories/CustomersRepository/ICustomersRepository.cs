@@ -7,6 +7,6 @@ namespace RestaurantReservation.Db.Repositories.CustomersRepository
         void CreateCustomer(Customers customer);
         void DeleteCustomer(Customers customer);
         void UpdateCustomer(Customers customer);
-        bool IsExixtedCutomer(int customerId);
+        Task<Customers> IsExixtedCutomer(int customerId);
     }
 }
