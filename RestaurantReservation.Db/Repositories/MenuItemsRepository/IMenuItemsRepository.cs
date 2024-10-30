@@ -1,13 +1,14 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Db.Repositories.MenuItemsRepository
 {
     public interface IMenuItemsRepository
     {
-        void CreateMenuItems(MenuItems menuItem);
-        void DeleteMenuItems(MenuItems menuItem);
-        void UpdateMenuItems(MenuItems menuItem);
-        Task<MenuItems> IsExisitMenyItems(MenuItems menuItem);
+        public Task CreateMenuItems(MenuItems menuItem);
+        public Task DeleteMenuItems(MenuItems menuItem);
+        public Task UpdateMenuItems(MenuItems menuItem);
+        public Task<MenuItems> GetMenyItemsById(MenuItems menuItem);
     }
 }

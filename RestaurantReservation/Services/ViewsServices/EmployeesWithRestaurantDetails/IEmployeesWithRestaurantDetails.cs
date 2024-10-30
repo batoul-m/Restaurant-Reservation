@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models.Views;
-namespace RestaurantReservation.Db.Repository.ViewsRepository.EmployeesWithRestaurantDetailsRepository;
+using RestaurantReservation.Db.Repository.ViewsRepository.EmployeesWithRestaurantDetailsRepository;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.ViewsServices.EmployeesWithRestaurantDetails
 {
     public interface IEmployeesWithRestaurantDetails
     {        
-        Task<List<EmployeeWithRestaurantDetails>> GetEmployeesWithRestaurantDetailsAsync();
+        public Task<List<EmployeeWithRestaurantDetails>> GetEmployeesWithRestaurantDetailsAsync();
     }
 }

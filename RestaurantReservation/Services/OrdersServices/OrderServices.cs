@@ -1,35 +1,44 @@
 using RestaurantReservation.Db.Repositories.OrdersRepository;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.OrdersServices
 {
     public class OrderService : IOrderServices 
     {
         private readonly IOrdersRepository _ordersRepository;
-        public OrdersRespositry(IOrdersRepository ordersRepository)
+
+        public OrderService(IOrdersRepository ordersRepository)
         {
             _ordersRepository = ordersRepository;
         }
 
-        async void CreateOrders(Orders orders)
+        public async Task CreateOrders(Orders orders)
         {
             await _ordersRepository.CreateOrder(orders);
         }
 
-        async void DeleteOrders(Orders orders)
+        public async Task DeleteOrders(Orders orders)
         {
             await _ordersRepository.DeleteOrder(orders);
         }
 
-        async void pdateOrders(Orders orders)
+        public async Task pdateOrders(Orders orders)
         {
             await _ordersRepository.UpdateOrder(orders);
         }
-        async Task<List<Orders>> ListOrdersAndMenuItems(int reservationId)
+
+        public async Task<Orders> GetOrdersById(int orderId)
+        {
+            return await _ordersRepository.GetOrdersById(orderId);
+        }
+
+        public async Task<List<Orders>> ListOrdersAndMenuItems(int reservationId)
         {
             return await _ordersRepository.ListOrdersAndMenuItems(reservationId);
         }
 
-        async Task<List<MenuItems>> ListOrderedMenuItems(int reservationId)
+        public async Task<List<MenuItems>> ListOrderedMenuItems(int reservationId)
         {
             return await _ordersRepository.ListOrderedMenuItems(reservationId);
         }

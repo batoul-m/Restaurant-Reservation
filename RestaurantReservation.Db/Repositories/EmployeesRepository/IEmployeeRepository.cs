@@ -1,15 +1,15 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
+
 namespace RestaurantReservation.Db.Repositories.EmployeeRepository
 {
     public interface IEmployeeRepository
     {
-        void CreateEmployee(Employee employee);
-        void UpdateEmployee(Employee employee);
-        void DeleteEmployee(Employee employee);
-        Task<Employee> IsExisitEmployee(int employeeId);
-        Task<List<Employees>> ListManagers();
-        decimal CalculateAverageOrderAmount(int employeeId);
-
+        public Task CreateEmployee(Employee employee);
+        public Task UpdateEmployee(Employee employee);
+        public Task DeleteEmployee(Employee employee);
+        public Task<Employee> GetEmployeeById(int employeeId);
+        public Task<List<Employees>> ListManagers();
+        public <decimal> CalculateAverageOrderAmount(int employeeId);
     }
 }

@@ -1,32 +1,46 @@
 using RestaurantReservation.Db.Repositories.EmployeeRepository;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.EmployeesServices;
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeesRespositry(IEmployeeRepository employeeRepository)
+        
+        public EmployeeService(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
 
-        async void CreateEmployee(Employees employees)
+        public async Task CreateEmployee(Employees employees)
         {
             await _employeeRepository.CreateEmployee(employees);
         }
 
-        async void DeleteEmployee(Employees employees)
+        public async Task DeleteEmployee(Employees employees)
         {
             await _employeeRepository.DeleteEmployee(employees);
         }
 
-        async void UpdateEmployee(Employees employees)
+        public async Task UpdateEmployee(Employees employees)
         {
             await _employeeRepository.UpdateEmployee(employees);
         }
-        public async decimal CalculateAverageOrderAmount(int employeeId)
+
+        public async Task<Employee> GetEmployeeById(int employeeId)
+        {
+            return await _employeeRepository.GetEmployeeById(employeeId);
+        }
+
+        public async Task<decimal> CalculateAverageOrderAmount(int employeeId)
         {
             await _employeeRepository.CalculateAverageOrderAmount(employeeId);
+        }
+
+        public async Task<List<Employees>> ListManagers()
+        {
+            return await _employeeRepository.ListManagers();
         }
     }
 }

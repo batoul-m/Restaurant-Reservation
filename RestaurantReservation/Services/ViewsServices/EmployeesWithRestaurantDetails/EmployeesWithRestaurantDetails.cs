@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models.Views;
-namespace RestaurantReservation.Db.Repository.ViewsRepository.EmployeesWithRestaurantDetailsRepository;
+using RestaurantReservation.Db.Repository.ViewsRepository.EmployeesWithRestaurantDetailsRepository;
+using system.Threading.Tasks;
+
 namespace RestaurantReservation.Services.ViewsServices.EmployeesWithRestaurantDetails
 {
     public class EmployeesWithRestaurantDetails : IEmployeesWithRestaurantDetails
@@ -12,7 +14,8 @@ namespace RestaurantReservation.Services.ViewsServices.EmployeesWithRestaurantDe
         {
             _employeesWithRestaurantDetails = employeesWithRestaurantDetailsRepository;
         }
-        async Task<List<EmployeeWithRestaurantDetails>> GetEmployeesWithRestaurantDetailsAsync()
+
+        public async Task<List<EmployeeWithRestaurantDetails>> GetEmployeesWithRestaurantDetailsAsync()
         {
             return await _employeesWithRestaurantDetails.GetEmployeesWithRestaurantDetailsAsync();
         }

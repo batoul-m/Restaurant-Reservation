@@ -1,12 +1,13 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
+
 namespace RestaurantReservation.Db.Repositories.CustomersRepository
 {
     public interface ICustomersRepository
     {
-        void CreateCustomer(Customers customer);
-        void DeleteCustomer(Customers customer);
-        void UpdateCustomer(Customers customer);
-        Task<Customers> IsExixtedCutomer(int customerId);
+        public Task CreateCustomer(Customers customer);
+        public Task DeleteCustomer(Customers customer);
+        public Task UpdateCustomer(Customers customer);
+        public Task<Customers> GetCutomerById(int customerId);
     }
 }

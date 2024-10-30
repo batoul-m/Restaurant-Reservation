@@ -1,11 +1,14 @@
 using RestaurantReservation;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.CustomerServices
 {
     public interface ICustomerServices
     {
-        void CreateCustomer(Customers customer);
-        void DeleteCustomers(Customers customer);
-        void UpdateCustomer(Customers customer);
+        public Task CreateCustomer(Customers customer);
+        public Task DeleteCustomers(Customers customer);
+        public Task UpdateCustomer(Customers customer);
+        public Task<Customers> GetCustomerById(int customerId);
     }
 }

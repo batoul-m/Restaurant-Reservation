@@ -1,28 +1,36 @@
 using RestaurantReservation.Db.Repositories.CustomersRepository;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.CustomerServices;
 {
     public class CustomerServices : ICustomerServices
     {
         private readonly ICustomersRepository _customersRepository;
-        public CustomersRespositry(ICustomersRepository customersRepository)
+
+        public CustomerServices(ICustomersRepository customersRepository)
         {
             _customersRepository = customerRepository;
         }
-        async void CreateCustomer(Customers customer)
+
+        public async Task<Customers> CreateCustomer(Customers customer)
         {
-            await _customersRepository.CreateCustomer(customer);
-            
+            await _customersRepository.CreateCustomer(customer);           
         }
 
-        async void DeleteCustomers(Customers customer)
+        public async Task DeleteCustomers(Customers customer)
         {
             await _customersRepository.DeleteCustomer(customer);
         }
 
-        async void UpdateCustomer(Customers customer)
+        public async Task UpdateCustomer(Customers customer)
         {
             await _customersRepository.UpdateCustomer(customer);
+        }
+
+        public async Task GetCustomerById(int customerId)
+        {
+            return await _customersRepository.GetCustomerById(customerId);
         }
     }
 }

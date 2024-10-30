@@ -1,15 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models.Views;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Db.Repositories.ViewsRepositories.ReservationWithDetailsReposiroty
 {
     public class ReservationWithDetailsReposiroty : IReservationWithDetailsReposiroty
     {
         private readonly RestaurantReservationDbContext _context;
-        public ReservationWithDetails(RestaurantReservationDbContext context)
+        
+        public ReservationWithDetailsReposiroty(RestaurantReservationDbContext context)
         {
             _context = context;
         }
+
         public async Task<ArrayList> GetReservationsWithDetailsAsync()
         {
             var result = new ArrayList();
@@ -20,7 +24,6 @@ namespace RestaurantReservation.Db.Repositories.ViewsRepositories.ReservationWit
             {
                 result.Add(item); 
             }
-
             return result;
         }
     }

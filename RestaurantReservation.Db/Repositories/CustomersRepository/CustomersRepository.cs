@@ -1,23 +1,27 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Db.Repositories.CustomersRepository
 {
     public class CustomersRepository : ICustomersRepository
     {
         private readonly RestaurantReservationDbContext _context;
-        public CustomerServices(RestaurantReservationDbContext context)
+        public CustomersRepository(RestaurantReservationDbContext context)
         {
             _context = context;
         }
-        async void CreateCustomer(Customers customer)
+
+        public async Task CreateCustomer(Customers customer)
         {
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
         }
-        async void UpdateCustomer(Customers customer)
+
+        public async Task UpdateCustomer(Customers customer)
         {
-            var existingCustomer = IsExistedCutomer(customer.CustomerId);
+            var existingCustomer = GetCutomerById(customer.CustomerId);
             if (existingCustomer is not null)
             {
                 existingCustomer.FirstName = customer.FirstName;
@@ -27,18 +31,20 @@ namespace RestaurantReservation.Db.Repositories.CustomersRepository
                 await _context.SaveChangesAsync();
             }
         }
-        async void DeleteCustomer(Customers customer)
+
+        public async Task DeleteCustomer(Customers customer)
         {
-            var existingcustomer = IsExistedCutomer(customer.CustomerId);
+            var existingcustomer = GetCutomerById(customer.CustomerId);
             if (existingcustomer is not null)
             {
                 _context.Customers.Remove(existingcustomer);
                await _context.SaveChangesAsync();
             }
         }
-        async public Task<Customers> IsExistedCutomer(int customerId)
+
+        public async Task<Customers> GetCutomerById(int customerId)
         {
-            return await _context.Customers.FindAsync(c => c.Id == customerId);
+            return await _context.Customers.FindAsync(customerId);
         }
     }
 }

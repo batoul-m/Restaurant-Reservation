@@ -1,6 +1,9 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RestaurantReservation.Db.Repositories.OrdersRepository
 {
@@ -8,18 +11,19 @@ namespace RestaurantReservation.Db.Repositories.OrdersRepository
     {
         private readonly RestaurantReservationDbContext _context;
 
-        public OrderService(RestaurantReservationDbContext context)
+        public OrdersRespositry(RestaurantReservationDbContext context)
         {
             _context = context;
         }
-        async void CreateOrder(Order order)
+        public async Task CreateOrder(Order order)
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
         }
-        async void UpdateOrder(Order order)
+
+        public async Task UpdateOrder(Order order)
         {
-            var existingOrder = IsExisitOrder(OrderId);
+            var existingOrder = GetOrderById(OrderId);
             if (existingOrder is not null)
             {
                 existingOrder.ReservationId = order.ReservationId;
@@ -28,31 +32,34 @@ namespace RestaurantReservation.Db.Repositories.OrdersRepository
                 await _context.SaveChangesAsync();
             }
         }
-        async void DeleteOrder(Order order)
+
+        public async Task DeleteOrder(Order order)
         {
-            var existingOrder = IsExisitOrder(OrderId);
+            var existingOrder = GetOrderById(OrderId);
             if (existingOrder is not null)
             {
                 _context.Orders.Remove(existingOrder);
                 await _context.SaveChangesAsync();
             } 
         }
-        public async Task<OrderItems> IsExisitOrder(int OrderId)
+
+        public async Task<OrderItems> GetOrderById(int OrderId)
         {
-            return await _context.OrderItems.FindAsync(c => c.OrderId == OrderId);
+            return await _context.OrderItems.FindAsync(OrderId);
         }
-        Task<List<Orders>> ListOrdersAndMenuItems(int reservationId)
+        
+        public async Task<List<Orders>> ListOrdersAndMenuItems(int reservationId)
         {
-            return _context.Orders
+            return await _context.Orders
                 .Where(o => o.ReservationId == reservationId)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItems)
                 .ToListAsync();
         }
 
-        Task<List<MenuItems>> ListOrderedMenuItems(int reservationId)
+        public async Task<List<MenuItems>> ListOrderedMenuItems(int reservationId)
         {
-            return _context.OrderItems
+            return await _context.OrderItems
                 .Where(oi => oi.Orders.ReservationId == reservationId)
                 .Select(oi => oi.MenuItems)
                 .ToListAsync();     
