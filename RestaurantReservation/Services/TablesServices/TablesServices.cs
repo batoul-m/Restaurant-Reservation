@@ -1,39 +1,36 @@
-using RestaurantReservation.Db;
+using RestaurantReservation.Db.Repositories.TablesRepository;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
 
 namespace RestaurantReservation.Services.TabelsServices
 {
     public class TabelsServices : ITablesServices
     {
-        private readonly RestaurantReservationDbContext _context;
-        async void CreateTable(Tabels table)
+        private readonly ITablesRepository _tablesRepository;
+
+        public TabelsServices(ITablesRepository tablesRepository)
         {
-            _context.Tabels.Add(table);
-            await _context.SaveChangesAsync();
+            _tablesRepository = tablesRepository;
         }
-        async void DeleteTable(Tabels table)
+
+        public async Task CreateTables(Tabels tabels)
         {
-            var exisitingTable = FindTable(table);
-            if (exisitingTable is not null)
-            {
-                _context.Tabels.Remove(exisitingTable);
-                await _context.SaveChangesAsync();
-            }
+            await _tablesRepository.CreateTables(tabels);
         }
-        async void UpdateTable(Tabels table)
+
+        public async Task DeleteTables(Tabels tabels)
         {
-            var existingTabel = FindTable(table);
-            if (existingTabel is not null)
-            {
-                existingTabel.TabelsId = table.TabelsId;
-                existingTabel.ResturantId = table.ResturantId;
-                existingTabel.Capacity = table.Capacity;
-                await _context _context.SaveChangesAsync();
-            }
+           await _tablesRepository.DeleteTables(tabels);
         }
-        bool FindTable(Tabels table)
+
+        public async Task UpdateTables(Tabels tabels)
         {
-            return _context.Tabels.Find(table.TabelsId);
+            await _tablesRepository.UpdateTables(tabels);
+        }
+
+        public async Task<Tabels> GetTablesById(int id)
+        {
+            return await _tablesRepository.GetTablesById(id);
         }
     }
 }

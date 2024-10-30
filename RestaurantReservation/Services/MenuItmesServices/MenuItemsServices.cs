@@ -1,45 +1,36 @@
-using RestaurantReservation.Db;
-using RestaurantReservation.Models;
-using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Db.Repositories.MenuItemsRespositry;
+using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.MenuItemsServices
 {
-    public class MenuItemsService : IMenuItemsService 
+    public class MenuItemsService : IMenuItemsService
     {
-        private readonly RestaurantReservationDbContext _context
-        public MenuItemsService(RestaurantReservationDbContext context)
+        private readonly IMenuItemsRepository _menuItemsRepository;
+        
+        public MenuItemsService(IMenuItemsRepository menuItemsRepository)
         {
-            _context = context;
+            _menuItemsRepository = menuItemsRepository;
         }
-        async void CreateMenuItems(MenuItems menuItem)
+
+        public async Task CreateMItems(MenuItems menuItems)
         {
-            _context.MenuItems.Add(menuItem);
-            await _context.SaveChangesAsync();
+            await _menuItemsRepository.CreateMenuItems(menuItems);
         }
-        async void DeleteMenuItems(MenuItems menuItem)
+
+        public async Task DeleteMItems(MenuItems menuItems)
         {
-            var exisitingItems = FindMenuItems(menuItem);
-            if (exisitingItems is not null)
-            {
-                _context.MenuItems.Remove(exisitingItems);
-                await _context.SaveChangesAsync();
-            }
+            await _menuItemsRepository.DeleteMenuItems(menuItems);
         }
-        async void UpdateMenuItems(MenuItems menuItem)
+
+        public async Task UpdateMItems(MenuItems menuItems)
         {
-            var existingItems = FindMenuItems(menuItem);
-            if (existingItems is not null)
-            {
-                existingItems.Name = menuItem.Name;
-                existingItems.Description = menuItem.Description;
-                existingItems.Price = menuItem.Price;
-                existingItems.ResturantId= menuItem.ResturantId;
-                await _context.SaveChangesAsync();
-            }
-            
+           await _menuItemsRepository.UpdateMenuItems(menuItems);
         }
-        bool FindMenuItems(MenuItems menuItem)
+
+        public async Task<MenuItems> GetMenuItemsById(int id)
         {
-            return _context.MenuItems.Find(menuItem.ItemId);
+            return await _menuItemsRepository.GetMenuItemsById(id);
         }
     }
 }

@@ -1,14 +1,16 @@
-using RestaurantReservation.Db;
+using RestaurantReservation;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.OrdersServices
 {
     public interface IOrderServices
     {
-        void CreateOrder(Order order);
-        void UpdateOrder(Order order);
-        void DeleteOrder(Order order);
-        bool FindOrder(Order order);
-        Task<List<Orders>> ListOrdersAndMenuItems(int reservationId);
-        Task<List<MenuItems>> ListOrderedMenuItems(int reservationId);
+        public Task CreateOrders(Orders orders);
+        public Task DeleteOrders(Orders orders);
+        public Task UpdateOrders(Orders orders);
+        public Task<Orders> GetOrdersById(int id);
+        public Task<List<Orders>> ListOrdersAndMenuItems(int reservationId);
+        public Task<List<MenuItems>> ListOrderedMenuItems(int reservationId);
     }
 }

@@ -1,44 +1,36 @@
-using RestaurantReservation.Db;
+using RestaurantReservation.Db.Repositories.OrderItemsRepository;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.OrderItemsServices
 {
     public class OrderItemsServices : IOrderItemsService
     {
-        private readonly RestaurantReservationDbContext _context;
-        public OrderItemsServices(RestaurantReservationDbContext context)
+        private readonly IOrderItemsRepository _orderItemsRepository;
+
+        public OrderItemsServices(IOrderItemsRepository orderItemsRepository)
         {
-            _context = context;
+            _orderItemsRepository = orderItemsRepository;
         }
-        async void CreateOrderItem(OrderItem item)
+
+        public async Task CreateOItems(OrderItems orderItems)
         {
-            _context.OrderItems.Add(item);
-            await _context.SaveChangesAsync();
+            await _orderItemsRepository.CreateOrderItem(orderItems);
         }
-        async void UpdateOrderItem(OrderItem item)
+
+        public async Task DeleteOItems(OrderItems orderItems)
         {
-            var existingItem = FindOrderItem(item);
-            if (existingItem is not null)
-            {
-                existingItem.OrdersId = item.OrdersId;
-                existingItem.ItemId = item.ItemId;
-                existingItem.Quantity = item.Quantity;
-                existingItem.MenuItems = item.MenuItems;
-                await _context.SaveChangesAsync();
-            }
-            
+            await _orderItemsRepository.DeleteOrderItem(orderItems);
         }
-        async void DeleteOrderItem(OrderItem item)
+
+        public async Task UpdateOItems(OrderItems orderItems)
         {
-            var existingItem = FindOrderItem(item);
-            if (existingItem is not null)
-            {
-                _context.OrderItems.Remove(existingItem);
-                await _context.SaveChangesAsync();
-            }
+            await _orderItemsRepository.UpdateOrderItem(orderItems);
         }
-        bool FindOrderItem(OrderItem item)
+
+        public async Task<OrderItems> GetOrderItemsById(int id)
         {
-            return _context.OrderItems.Find(item.ItemId);
+            return await _orderItemsRepository.GetOrderItemsById(id); 
         }
     }
 }

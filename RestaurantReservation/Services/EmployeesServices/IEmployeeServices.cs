@@ -1,15 +1,16 @@
-using RestaurantReservation.Db;
+using RestaurantReservation;
 using RestaurantReservation.Db.Models;
-namespace RestaurantReservation.Services.EmployeesServices
+using System.Threading.Tasks;
+
+namespace RestaurantReservation.Services.EmployeeService
 {
     public interface IEmployeeService
     {
-        void CreateEmployee(Employee employee);
-        void UpdateEmployee(Employee employee);
-        void DeleteEmployee(Employee employee);
-        bool FindEmployee(Employee employee);
-        Task<List<Employees>> ListManagers();
-        decimal CalculateAverageOrderAmount(int employeeId);
-
+        public Task CreateEmployee(Employees employees);
+        public Task DeleteEmployee(Employees employees);
+        public Task UpdateEmployee(Employees employees);
+        public Task<Employee> GetEmployeeById(int employeeId);
+        public Task<decimal> CalculateAverageOrderAmount(int employeeId);
+        public Task<List<Employees>> ListManagers();
     }
 }

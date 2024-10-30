@@ -1,12 +1,14 @@
-using RestaurantReservation.Db;
+using RestaurantReservation;
 using RestaurantReservation.Db.Models;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Services.OrderItemsServices
 {
     public interface IOrderItemsService
     {
-        void CreateOrderItem(OrderItem item);
-        void UpdateOrderItem(OrderItem item);
-        void DeleteOrderItem(OrderItem item);
-        bool FindOrderItem(OrderItem item);
+        public Task CreateOItems(OrderItems orderItems);
+        public Task DeleteOItems(OrderItems orderItems);
+        public Task UpdateOItems(OrderItems orderItems);
+        public Task<OrderItems> GetOrderItemsById(int id);
     }
 }

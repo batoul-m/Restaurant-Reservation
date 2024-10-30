@@ -1,32 +1,61 @@
-using RestaurantReservation.Services.ReservationsServices;
+using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace RestaurantReservation.Db.Repositories.ReservationsRepository
 {
     public class ReservationsRespositry : IReservationsRepository
     {
-        private readonly IReservationService _reservationService;
-        public ReservationsRespositry(IReservationService reservationService)
+        private readonly RestaurantReservationDbContext _context;
+
+        public ReservationsRespositry(RestaurantReservationDbContext context)
         {
-            _reservationService = reservationService;
+            _context = context;
         }
 
-        void IReservationsRepository.CreateReservations(Reservation reservation)
+        public async Task CreateReservation(Reservation reservation);
         {
-            _reservationService.CreateReservation(reservation);
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
         }
 
-        void IReservationsRepository.DeleteReservations(Reservation reservation)
+        public async Task UpdateReservation(Reservation reservation)
         {
-            _reservationService.DeleteReservation(reservation);
+            var existingReservation = GetReservationsById(reservation.ReservationId);
+            if (existingReservation is not null)
+            {
+                existingReservation.ReservationId = reservation.ReservationId;
+                existingReservation.CustomerId = reservation.CustomerId;
+                existingReservation.RestaurantId = reservation.ResturantId;
+                existingReservation.TablesId= reservation.TabelsId;
+                existingReservation.PartySize = reservation.PartySize;
+                await _context.SaveChangesAsync();
+            }
         }
 
-        void IReservationsRepository.UpdateRseservations(Reservation reservation)
+        public async Task DeleteReservation(Reservation reservation)
         {
-            _reservationService.UpdateReservation(reservation);
+            var existingReservation = GetReservationsById(reservation.ReservationId);
+            if (existingReservation is not null)
+            {
+                _context.Reservations.Remove(existingReservation);
+                await _context.SaveChangesAsync();
+            }
         }
-        Task<List<Reservation>> IReservationService.GetReservationsByCustomer(int customerId)
+
+        public async Task<Reservations> GetReservationsById(int reservationId)
         {
-            return _reservationService.GetReservationByCustomer(customerId);
+            return await _context.Reservations.FindAsync(reservationId);
+        }
+
+        public async Task<List<Reservation>> GetReservationsByCustomer(int customerId)
+        {
+            return await _context.Reservations
+                .Where(r => r.CustomerId == customerId)
+                .ToListAsync();
         }
     }
 }
